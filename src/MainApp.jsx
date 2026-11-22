@@ -5,6 +5,20 @@ import NavBar from './components/NavBar';
 import Home from './components/Home';
 import endpoints from './constants/endpoints';
 
+const Skills = React.lazy(() => import('./components/Skills'));
+const Education = React.lazy(() => import('./components/Education'));
+const Experience = React.lazy(() => import('./components/Experience'));
+const Projects = React.lazy(() => import('./components/Projects'));
+const Contact = React.lazy(() => import('./components/Contact'));
+
+const routeComponents = {
+  Skills,
+  Education,
+  Experience,
+  Projects,
+  Contact,
+};
+
 function MainApp() {
   const [data, setData] = useState(null);
 
@@ -26,7 +40,8 @@ function MainApp() {
             <Route exact path="/" element={<Home />} />
             {data
               && data.sections.map((route) => {
-                const SectionComponent = React.lazy(() => import(`./components/${route.component}.jsx`));
+                const SectionComponent = routeComponents[route.component];
+                if (!SectionComponent) return null;
                 return (
                   <Route
                     key={route.headerTitle}
